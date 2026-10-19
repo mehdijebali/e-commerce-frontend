@@ -1,0 +1,7 @@
+<div class="container text-center mt-5">
+  @if (auth.error$ | async; as error) {
+    <div class="alert alert-danger">Login failed: {{ error.message }}</div>
+  } @else {
+    <p>Signing you in...</p>
+  }
+</div>

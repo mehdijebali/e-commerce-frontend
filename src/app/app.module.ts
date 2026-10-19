@@ -22,8 +22,10 @@ import { LoginCallbackComponent } from './components/login-callback/login-callba
 import { AuthGuard, AuthHttpInterceptor, AuthModule } from '@auth0/auth0-angular';
 import myAppConfig from './config/my-app-config';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
+import { MembersPageComponent } from './components/members-page/members-page.component';
 
 const routes: Routes = [
+  {path: 'members', component: MembersPageComponent,  canActivate: [AuthGuard] },
   {path: 'login/callback', component: LoginCallbackComponent},
   {path: 'checkout', component: CheckoutComponent},
   {path: 'cart-details', component: CartDetailsComponent},
@@ -49,6 +51,7 @@ const routes: Routes = [
     CheckoutComponent,
     LoginStatusComponent,
     LoginCallbackComponent,
+    MembersPageComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),

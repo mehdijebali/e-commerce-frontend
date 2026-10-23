@@ -1,3 +1,5 @@
+import { environment } from '../../environments/environment';
+
 export default {
   auth: {
     domain: "dev-6ly5qzzk8iae1ohp.us.auth0.com",
@@ -9,8 +11,8 @@ export default {
   },
   httpInterceptor: {
     allowedList: [
-      'http://localhost:8080/api/orders/**',
-      'http://localhost:8080/api/checkout/purchase'
+      environment.api_base_url + '/api/orders/**',
+      environment.api_base_url + '/api/checkout/purchase'
     ],
   },
 }

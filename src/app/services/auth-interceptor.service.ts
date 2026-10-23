@@ -1,3 +1,4 @@
+import { environment } from '../../environments/environment';
 import {
   HttpEvent,
   HttpHandler,
@@ -17,7 +18,7 @@ export class AuthInterceptorService implements HttpInterceptor {
   }
 
   private async handleAccess(request: HttpRequest<any>, next: HttpHandler): Promise<HttpEvent<any>> {
-    const securedEndpoints = ['http://localhost:8080/api/orders'];
+    const securedEndpoints = [environment.api_base_url + '/api/orders'];
 
     if (securedEndpoints.some((url) => request.urlWithParams.includes(url))) {
       await this.auth.getAccessTokenSilently().forEach((token) => {

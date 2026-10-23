@@ -1,3 +1,4 @@
+import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
@@ -10,8 +11,8 @@ import { Country } from '../common/country';
 })
 export class Luv2ShopFormService {
 
-  private countriesUrl = 'http://localhost:8080/api/countries';
-  private statesUrl = 'http://localhost:8080/api/states';
+  private countriesUrl = environment.api_base_url + '/api/countries';
+  private statesUrl = environment.api_base_url + '/api/states';
 
   constructor(private httpClient: HttpClient) { }
 

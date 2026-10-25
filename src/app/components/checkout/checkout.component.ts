@@ -10,6 +10,8 @@ import { OrderItem } from '../../common/order-item';
 import { Order } from '../../common/order';
 import { CheckoutService } from '../../services/checkout.service';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
+import { PaymentInfo } from '../../common/payment-info';
 
 @Component({
   selector: 'app-checkout',
@@ -33,6 +35,13 @@ export class CheckoutComponent implements OnInit {
   billingAddressStates: State[] = [];
 
   storage: Storage = sessionStorage;
+
+  // initialize Stripe API
+  stripe = Stripe(environment.stripePublishableKey);
+
+  paymentInfo: PaymentInfo = new PaymentInfo();
+  cardElement: any;
+  displayError: any = "";
   
   constructor(
     private formBuilder: FormBuilder,
@@ -84,6 +93,7 @@ export class CheckoutComponent implements OnInit {
                                       Luv2ShopValidators.notOnlyWhitespace])
       }),
       creditCard: this.formBuilder.group({
+        /*
         cardType: new FormControl('', [Validators.required]),
         nameOnCard: new FormControl('', [Validators.required, Validators.minLength(2), 
                                           Luv2ShopValidators.notOnlyWhitespace]),
@@ -91,9 +101,10 @@ export class CheckoutComponent implements OnInit {
         securityCode: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{3}$')]),
         expirationMonth: [''],
         expirationYear: ['']
+        */
       })
     });
-
+    /*
     // populate credit card months
 
     const startMonth: number = new Date().getMonth() + 1;
@@ -114,7 +125,7 @@ export class CheckoutComponent implements OnInit {
         this.creditCardYears = data;
       }
     );
-
+    */
     // populate countries
 
     this.luv2ShopFormService.getCountries().subscribe(
@@ -123,6 +134,34 @@ export class CheckoutComponent implements OnInit {
         this.countries = data;
       }
     );
+
+  }
+
+  setupStripePaymentForm() {
+
+    // get a handle to stripe elements
+    var elements = this.stripe.elements();
+
+    // Create a card element ... and hide the zip-code field
+    this.cardElement = elements.create('card', { hidePostalCode: true });
+
+    // Add an instance of card UI component into the 'card-element' div
+    this.cardElement.mount('#card-element');
+
+    // Add event binding for the 'change' event on the card element
+    this.cardElement.on('change', (event: any) => {
+
+      // get a handle to card-errors element
+      this.displayError = document.getElementById('card-errors');
+
+      if (event.complete) {
+        this.displayError.textContent = "";
+      } else if (event.error) {
+        // show validation error to customer
+        this.displayError.textContent = event.error.message;
+      }
+
+    });
 
   }
   
@@ -256,7 +295,7 @@ export class CheckoutComponent implements OnInit {
     // navigate back to the products page
     this.router.navigateByUrl("/products");
   }
-
+  /*
   handleMonthsAndYears() {
 
     const creditCardFormGroup = this.checkoutFormGroup.get('creditCard');
@@ -286,7 +325,8 @@ export class CheckoutComponent implements OnInit {
       }
     );
   }
-
+  */
+ 
   getStates(formGroupName: string) {
 
     const formGroup = this.checkoutFormGroup.get(formGroupName);

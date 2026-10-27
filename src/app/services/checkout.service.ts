@@ -11,7 +11,7 @@ export class CheckoutService {
 
   private purchaseUrl = environment.api_base_url + '/api/checkout/purchase';
 
-  private paymentIntentUrl = environment.api_base_url + '/checkout/payment-intent';
+  private paymentIntentUrl = environment.api_base_url + '/api/checkout/payment-intent';
 
   constructor(private httpClient: HttpClient) { }
 
